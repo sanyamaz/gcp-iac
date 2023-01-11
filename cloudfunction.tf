@@ -67,3 +67,4 @@ resource "google_cloudfunctions2_function" "python_cf" {
     timeout_seconds    = 60
   }
 }
+

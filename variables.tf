@@ -1,9 +1,9 @@
 variable "project" {
-  type = string
+  type    = string
   default = "evl-dev"
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "us-east1"
 }
