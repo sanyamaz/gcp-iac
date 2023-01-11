@@ -1,19 +1,22 @@
-resource "random_id" "bucket_prefix" {
-  byte_length = 4
-}
-
 resource "google_storage_bucket" "cloudfunc_bucket" {
-  name                        = "gcf-${random_id.bucket_prefix.hex}"
+  name                        = "gcf-bucket-wert"
   location                    = "US"
   uniform_bucket_level_access = true
 }
 
-//nodejs cf
-resource "google_storage_bucket_object" "nodejs_code" {
-  name   = "function-nodejs.zip"
-  bucket = google_storage_bucket.cloudfunc_bucket.name
-  source = "./cdf_code/function-nodejs.zip"
+data "archive_file" "nodejs_code" {
+  type = "zip"
+  source_dir = "./nodejs-cf"
+  output_path = "./nodejs-cf.zip"
 }
+
+resource "google_storage_bucket_object" "cf_nodejs_source_archive" {
+  name   = "${data.archive_file.nodejs_code.output_md5}.zip"
+  bucket = google_storage_bucket.cloudfunc_bucket.name
+  source = data.archive_file.nodejs_code.output_path
+}
+
+//// nodejs cf
 
 resource "google_cloudfunctions2_function" "nodejs_cf" {
   name        = "nodejs-cf"
@@ -26,7 +29,7 @@ resource "google_cloudfunctions2_function" "nodejs_cf" {
     source {
       storage_source {
         bucket = google_storage_bucket.cloudfunc_bucket.name
-        object = google_storage_bucket_object.nodejs_code.name
+        object = google_storage_bucket_object.cf_nodejs_source_archive.name
       }
     }
   }
@@ -38,11 +41,18 @@ resource "google_cloudfunctions2_function" "nodejs_cf" {
   }
 }
 
-//python cf
-resource "google_storage_bucket_object" "python_code" {
-  name   = "python-cf.zip"
+//// python cf
+
+data "archive_file" "python_code" {
+  type = "zip"
+  source_dir = "./python-cf"
+  output_path = "./python-cf.zip"
+}
+
+resource "google_storage_bucket_object" "cf_python_source_archive" {
+  name   = "${data.archive_file.python_code.output_md5}.zip"
   bucket = google_storage_bucket.cloudfunc_bucket.name
-  source = "./cdf_code/python-cf.zip"
+  source = data.archive_file.python_code.output_path
 }
 
 resource "google_cloudfunctions2_function" "python_cf" {
@@ -56,7 +66,7 @@ resource "google_cloudfunctions2_function" "python_cf" {
     source {
       storage_source {
         bucket = google_storage_bucket.cloudfunc_bucket.name
-        object = google_storage_bucket_object.python_code.name
+        object = google_storage_bucket_object.cf_python_source_archive.name
       }
     }
   }
