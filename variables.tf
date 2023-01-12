@@ -15,7 +15,7 @@ variable "api_enable" {
 
 variable "app_cloud_services" {
   description = "List of API to enable for projects"
-  type = list(string)
+  type        = list(string)
   default = [
     "storage.googleapis.com",
     "artifactregistry.googleapis.com",

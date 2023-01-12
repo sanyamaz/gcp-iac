@@ -7,8 +7,8 @@ resource "google_storage_bucket" "cloudfunc_bucket" {
 // nodejs cf
 
 data "archive_file" "nodejs_code" {
-  type = "zip"
-  source_dir = "./nodejs-cf"
+  type        = "zip"
+  source_dir  = "./nodejs-cf"
   output_path = "./nodejs-cf.zip"
 }
 
@@ -44,8 +44,8 @@ resource "google_cloudfunctions2_function" "nodejs_cf" {
 // python cf
 
 data "archive_file" "python_code" {
-  type = "zip"
-  source_dir = "./python-cf"
+  type        = "zip"
+  source_dir  = "./python-cf"
   output_path = "./python-cf.zip"
 }
 
