@@ -4,4 +4,3 @@ terraform {
     prefix = "terraform/state"
   }
 }
-// if got an error, should run "gcloud auth application-default login"

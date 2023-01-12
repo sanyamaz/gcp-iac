@@ -4,6 +4,8 @@ resource "google_storage_bucket" "cloudfunc_bucket" {
   uniform_bucket_level_access = true
 }
 
+// nodejs cf
+
 data "archive_file" "nodejs_code" {
   type = "zip"
   source_dir = "./nodejs-cf"
@@ -15,8 +17,6 @@ resource "google_storage_bucket_object" "cf_nodejs_source_archive" {
   bucket = google_storage_bucket.cloudfunc_bucket.name
   source = data.archive_file.nodejs_code.output_path
 }
-
-//// nodejs cf
 
 resource "google_cloudfunctions2_function" "nodejs_cf" {
   name        = "nodejs-cf"
@@ -41,7 +41,7 @@ resource "google_cloudfunctions2_function" "nodejs_cf" {
   }
 }
 
-//// python cf
+// python cf
 
 data "archive_file" "python_code" {
   type = "zip"
