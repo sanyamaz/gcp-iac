@@ -1,81 +1,48 @@
-resource "google_storage_bucket" "cloudfunc_bucket" {
-  name                        = "gcf-bucket-wert"
-  location                    = "US"
-  uniform_bucket_level_access = true
+locals {
+  cloudfunctions = {
+    "nodejs-cf" = { runtime = "nodejs16", entry_point = "helloHttp" },
+    "python-cf" = { runtime = "python310", entry_point = "hello_get" },
+  }
 }
 
-// nodejs cf
+data "archive_file" "source_code" {
+  for_each = local.cloudfunctions
 
-data "archive_file" "nodejs_code" {
   type        = "zip"
-  source_dir  = "./nodejs-cf"
-  output_path = "./nodejs-cf.zip"
+  source_dir  = "./${each.key}"
+  output_path = "./${each.key}.zip"
 }
 
-resource "google_storage_bucket_object" "cf_nodejs_source_archive" {
-  name   = "${data.archive_file.nodejs_code.output_md5}.zip"
+resource "google_storage_bucket_object" "cf_source_code_archive" {
+  for_each = local.cloudfunctions
+
+  name   = "${data.archive_file.source_code[each.key].output_md5}.zip"
   bucket = google_storage_bucket.cloudfunc_bucket.name
-  source = data.archive_file.nodejs_code.output_path
+  source = data.archive_file.source_code[each.key].output_path
 }
 
-resource "google_cloudfunctions2_function" "nodejs_cf" {
-  name        = "nodejs-cf"
+resource "google_cloudfunctions2_function" "cloud_function" {
+  for_each = local.cloudfunctions
+
+  name        = each.key
   location    = var.region
-  description = "test node js function"
+  description = "test-${each.key}-function"
 
   build_config {
-    runtime     = "nodejs16"
-    entry_point = "helloHttp"
+    runtime     = each.value.runtime
+    entry_point = each.value.entry_point
     source {
       storage_source {
         bucket = google_storage_bucket.cloudfunc_bucket.name
-        object = google_storage_bucket_object.cf_nodejs_source_archive.name
+        object = google_storage_bucket_object.cf_source_code_archive[each.key].name
       }
     }
   }
 
   service_config {
-    max_instance_count = 1
-    available_memory   = "256M"
-    timeout_seconds    = 60
-    service_account_email = google_service_account.cloudfunction_sa.email
-  }
-}
-
-// python cf
-
-data "archive_file" "python_code" {
-  type        = "zip"
-  source_dir  = "./python-cf"
-  output_path = "./python-cf.zip"
-}
-
-resource "google_storage_bucket_object" "cf_python_source_archive" {
-  name   = "${data.archive_file.python_code.output_md5}.zip"
-  bucket = google_storage_bucket.cloudfunc_bucket.name
-  source = data.archive_file.python_code.output_path
-}
-
-resource "google_cloudfunctions2_function" "python_cf" {
-  name        = "python-cf"
-  location    = var.region
-  description = "test python function"
-
-  build_config {
-    runtime     = "python310"
-    entry_point = "hello_get"
-    source {
-      storage_source {
-        bucket = google_storage_bucket.cloudfunc_bucket.name
-        object = google_storage_bucket_object.cf_python_source_archive.name
-      }
-    }
-  }
-
-  service_config {
-    max_instance_count = 1
-    available_memory   = "256M"
-    timeout_seconds    = 60
+    max_instance_count    = 1
+    available_memory      = "256M"
+    timeout_seconds       = 60
     service_account_email = google_service_account.cloudfunction_sa.email
   }
 }
