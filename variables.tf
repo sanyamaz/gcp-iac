@@ -24,3 +24,7 @@ variable "app_cloud_services" {
     "cloudfunctions.googleapis.com",
   ]
 }
+
+variable "cloudfunc_bucket" {
+  default = "gcf-bucket-wert"
+}

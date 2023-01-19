@@ -8,9 +8,3 @@ resource "google_storage_bucket" "tf_state_bucket" {
     enabled = true
   }
 }
-
-resource "google_storage_bucket" "cloudfunc_bucket" {
-  name                        = "gcf-bucket-wert"
-  location                    = "US"
-  uniform_bucket_level_access = true
-}
