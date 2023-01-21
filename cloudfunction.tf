@@ -14,7 +14,7 @@ module "cloudfunction" {
   sa_name        = each.key
   cf_iam_roles   = var.cf_iam_roles
   source_code    = each.key
-  cf_bucket_name = var.cf_bucket_name
+  cf_bucket_name = "gcf-bucket-wert"
   cf_name        = each.key
   runtime        = each.value.runtime
   entry_point    = each.value.entry_point

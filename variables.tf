@@ -8,11 +8,6 @@ variable "region" {
   default = "us-east1"
 }
 
-variable "api_enable" {
-  description = "Actually disabled the APIs listed"
-  default     = false
-}
-
 variable "app_cloud_services" {
   description = "List of API to enable for projects"
   type        = set(string)
@@ -23,11 +18,6 @@ variable "app_cloud_services" {
     "run.googleapis.com",
     "cloudfunctions.googleapis.com",
   ]
-}
-
-variable "cf_bucket_name" {
-  description = "bucket for cloudfunction source code"
-  default     = "gcf-bucket-wert"
 }
 
 variable "cf_iam_roles" {
