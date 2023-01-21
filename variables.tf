@@ -25,6 +25,7 @@ variable "app_cloud_services" {
   ]
 }
 
-variable "cloudfunc_bucket" {
-  default = "gcf-bucket-wert"
+variable "cf_bucket_name" {
+  description = "bucket for cloudfunction source code"
+  default     = "gcf-bucket-wert"
 }
