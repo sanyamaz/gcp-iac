@@ -20,7 +20,4 @@ variable "app_cloud_services" {
   ]
 }
 
-variable "cf_iam_roles" {
-  description = "iam roles for cloudfunction"
-  default     = ["roles/cloudfunctions.admin"]
-}
+

@@ -12,10 +12,4 @@ variable "project" {}
 
 variable "region" {}
 
-variable "sa_name" {}
-
-variable "cf_iam_roles" {}
-
-variable "sa_type" {
-  default = "serviceAccount"
-}
+variable "sa_email" {}
