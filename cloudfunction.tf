@@ -19,8 +19,3 @@ module "cloudfunction" {
   runtime        = each.value.runtime
   entry_point    = each.value.entry_point
 }
-
-variable "cf_iam_roles" {
-  description = "iam roles for cloudfunction"
-  default     = ["roles/cloudfunctions.admin"]
-}

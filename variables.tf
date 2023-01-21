@@ -15,7 +15,7 @@ variable "api_enable" {
 
 variable "app_cloud_services" {
   description = "List of API to enable for projects"
-  type        = list(string)
+  type        = set(string)
   default = [
     "storage.googleapis.com",
     "artifactregistry.googleapis.com",
@@ -28,4 +28,9 @@ variable "app_cloud_services" {
 variable "cf_bucket_name" {
   description = "bucket for cloudfunction source code"
   default     = "gcf-bucket-wert"
+}
+
+variable "cf_iam_roles" {
+  description = "iam roles for cloudfunction"
+  default     = ["roles/cloudfunctions.admin"]
 }
