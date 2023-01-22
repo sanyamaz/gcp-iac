@@ -13,3 +13,9 @@ variable "project" {}
 variable "region" {}
 
 variable "sa_email" {}
+
+variable "max_instance_count" {}
+
+variable "available_memory" {}
+
+variable "timeout_seconds" {}

@@ -27,10 +27,9 @@ resource "google_cloudfunctions2_function" "this" {
   }
 
   service_config {
-    max_instance_count    = 1
-    available_memory      = "256M"
-    timeout_seconds       = 60
+    max_instance_count    = var.max_instance_count
+    available_memory      = var.available_memory
+    timeout_seconds       = var.timeout_seconds
     service_account_email = var.sa_email
-    //service_account_email = google_service_account.this.email
   }
 }

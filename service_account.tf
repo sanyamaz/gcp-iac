@@ -1,3 +1,20 @@
+locals {
+  cf_service_accounts = {
+    "cf-nodejs" = {
+      iam_role = toset([
+        "roles/cloudfunctions.developer",
+        "roles/cloudfunctions.invoker"
+      ])
+    },
+    "cf-python" = {
+      iam_role = toset([
+        "roles/cloudfunctions.developer",
+        "roles/cloudfunctions.invoker"
+      ])
+    },
+  }
+}
+
 resource "google_service_account" "tf_admin_sa" {
   account_id   = "tf-admin"
   display_name = "tf-admin"
@@ -13,25 +30,11 @@ resource "google_project_iam_binding" "owner" {
   ]
 }
 
-module "cf_service_acc" {
+module "cf_service_accounts" {
   source   = "./modules/service_account"
-  for_each = var.cf_service_account_name
+  for_each = local.cf_service_accounts
 
-  service_account_name = each.value
-  iam_role             = var.cf_iam_role
-  project              = var.project
-}
-
-variable "cf_service_account_name" {
-  type = set(any)
-  default = [
-    "cf-nodejs",
-    "cf-python"
-  ]
-}
-
-variable "cf_iam_role" {
-  description = "IAM roles for cloudfunction"
-  type        = set(any)
-  default     = ["roles/cloudfunctions.developer", "roles/cloudfunctions.invoker"]
+  sa_name  = each.key
+  iam_role = each.value.iam_role
+  project  = var.project
 }
