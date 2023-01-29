@@ -6,7 +6,7 @@ locals {
       max_instance_count = "1",
       available_memory   = "256M",
       timeout_seconds    = "60",
-      service_acc        = values(module.cf_service_accounts)[0].sa_email,
+      service_acc        = module.cf_service_accounts["cf-nodejs"].sa_email,
     },
     "cf-python" = {
       runtime            = "python310",
@@ -14,7 +14,7 @@ locals {
       max_instance_count = "1",
       available_memory   = "256M",
       timeout_seconds    = "60",
-      service_acc        = values(module.cf_service_accounts)[1].sa_email,
+      service_acc        = module.cf_service_accounts["cf-python"].sa_email,
     },
   }
 }

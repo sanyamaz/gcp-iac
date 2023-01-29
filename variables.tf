@@ -8,6 +8,11 @@ variable "region" {
   default = "us-east1"
 }
 
+variable "zone" {
+  type    = string
+  default = "us-east1-b"
+}
+
 variable "app_cloud_services" {
   description = "List of API to enable for projects"
   type        = set(string)
@@ -17,6 +22,9 @@ variable "app_cloud_services" {
     "cloudbuild.googleapis.com",
     "run.googleapis.com",
     "cloudfunctions.googleapis.com",
+    "container.googleapis.com",
+    "containerregistry.googleapis.com",
+    "compute.googleapis.com",
   ]
 }
 
