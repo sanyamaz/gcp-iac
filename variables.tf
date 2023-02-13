@@ -15,9 +15,10 @@ variable "app_cloud_services" {
     "storage.googleapis.com",
     "artifactregistry.googleapis.com",
     "cloudbuild.googleapis.com",
+    "containerregistry.googleapis.com",
     "run.googleapis.com",
     "cloudfunctions.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "run.googleapis.com",
   ]
 }
-
-

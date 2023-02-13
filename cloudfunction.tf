@@ -6,7 +6,6 @@ locals {
       max_instance_count = "1",
       available_memory   = "256M",
       timeout_seconds    = "60",
-      service_acc        = module.cf_service_accounts["cf-nodejs"].sa_email,
     },
     "cf-python" = {
       runtime            = "python310",
@@ -14,7 +13,6 @@ locals {
       max_instance_count = "1",
       available_memory   = "256M",
       timeout_seconds    = "60",
-      service_acc        = module.cf_service_accounts["cf-python"].sa_email,
     },
   }
 }
@@ -25,7 +23,7 @@ module "cloudfunction" {
 
   project            = var.project
   region             = var.region
-  sa_email           = each.value.service_acc
+  sa_name            = each.key
   source_code        = each.key
   cf_bucket_name     = "gcf-bucket-wert"
   cf_name            = each.key

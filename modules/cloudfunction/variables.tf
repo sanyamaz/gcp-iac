@@ -12,7 +12,7 @@ variable "project" {}
 
 variable "region" {}
 
-variable "sa_email" {}
+variable "sa_name" {}
 
 variable "max_instance_count" {}
 

@@ -30,6 +30,12 @@ resource "google_cloudfunctions2_function" "this" {
     max_instance_count    = var.max_instance_count
     available_memory      = var.available_memory
     timeout_seconds       = var.timeout_seconds
-    service_account_email = var.sa_email
+    service_account_email = google_service_account.this.email
   }
+}
+
+resource "google_service_account" "this" {
+  project      = var.project
+  account_id   = var.sa_name
+  display_name = var.sa_name
 }
