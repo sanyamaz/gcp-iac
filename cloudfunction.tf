@@ -25,7 +25,7 @@ module "cloudfunction" {
   region             = var.region
   sa_name            = each.key
   source_code        = each.key
-  cf_bucket_name     = "gcf-bucket-wert"
+  cf_bucket_name     = google_storage_bucket.cf_bucket.name
   cf_name            = each.key
   runtime            = each.value.runtime
   entry_point        = each.value.entry_point

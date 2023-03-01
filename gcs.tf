@@ -1,10 +1,11 @@
-resource "google_storage_bucket" "tf_state_bucket" {
-  name          = "tfstate-bucket-1b922bf9"
+resource "google_storage_bucket" "cf_bucket" {
+  name          = "cf-bucket-wert"
   project       = var.project
-  location      = "US"
+  location      = var.region
   force_destroy = true
 
   versioning {
     enabled = true
   }
 }
+
