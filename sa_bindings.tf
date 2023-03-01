@@ -1,5 +1,6 @@
 locals {
-  cf_sa = { for k, v in module.cloudfunction : replace(k, "-", "_") => v.sa_email }
+  cf_sa   = {for k, v in module.cloudfunction : replace(k, "-", "_") => v.sa_email}
+  cf_name = {for k, v in module.cloudfunction : replace(k, "-", "_") => v.cf_name}
 }
 
 variable "cf_iam_binding" {
@@ -9,18 +10,31 @@ variable "cf_iam_binding" {
     "roles/cloudfunctions.invoker",
   ]
 }
-#variable "cf_iam_binding" {
-#  type = string
-#  default = "roles/owner"
-#}
 
-resource "google_project_iam_member" "cf_iam_binding" {
+resource "google_cloudfunctions_function_iam_binding" "cf_iam_binding" {
   for_each = local.cf_sa
 
   project = var.project
-  role    = var.cf_iam_binding
-  member  = "serviceAccount:${each.value}"
+  region = var.region
+  cloud_function = local.cf_name[each.key]
+  role = [for v in var.cf_iam_binding : tostring(v)]
+  members = [
+    "serviceAccount:${each.value}",
+  ]
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 resource "google_project_iam_binding" "owner" {
   project = var.project
