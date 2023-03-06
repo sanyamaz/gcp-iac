@@ -5,8 +5,8 @@ resource "google_project" "gcp_project" {
 }
 
 resource "google_project_service" "app_cloud_services" {
-  for_each           = toset(var.app_cloud_services)
-  project            = var.project
-  service            = each.value
-  disable_on_destroy = var.api_enable
+  for_each = var.app_cloud_services
+
+  project = var.project
+  service = each.value
 }

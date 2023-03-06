@@ -14,8 +14,8 @@ variable "region" {}
 
 variable "sa_name" {}
 
-variable "cf_iam_roles" {}
+variable "max_instance_count" {}
 
-variable "sa_type" {
-  default = "serviceAccount"
-}
+variable "available_memory" {}
+
+variable "timeout_seconds" {}
