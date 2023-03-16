@@ -21,3 +21,11 @@ resource "google_project_iam_binding" "owner" {
     "serviceAccount:${google_service_account.tf_admin_sa.email}",
   ]
 }
+
+resource "google_project_iam_binding" "cluster_admin" {
+  project = var.project
+  role    = "roles/container.admin"
+  members = [
+    "serviceAccount:${google_service_account.gke_sa.email}",
+  ]
+}
