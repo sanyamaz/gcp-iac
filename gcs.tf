@@ -8,4 +8,3 @@ resource "google_storage_bucket" "cf_bucket" {
     enabled = true
   }
 }
-
